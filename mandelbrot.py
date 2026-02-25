@@ -80,3 +80,35 @@ col_sums(A_f)
 print(f"Column traversal (Fortran): {time.time() - start:.4f}s")
 
 #---------Milestone 4: Problem Size Scaling - mandelbrot again
+
+def timed_mandelbrot(size, max_iter=100):
+    x = np.linspace(-2, 1, size)
+    y = np.linspace(-1.5, 1.5, size)
+    X, Y = np.meshgrid(x, y)
+    C = X + 1j * Y
+    Z = np.zeros_like(C)
+    M = np.zeros(C.shape, dtype=int)
+    
+    start = time.time()
+    for n in range(max_iter):
+        mask = np.abs(Z) <= 2
+        Z[mask] = Z[mask]**2 + C[mask]
+        M[mask] += 1
+    return time.time() - start
+
+sizes = [256, 512, 1024, 2048, 4096]
+runtimes = []
+
+for s in sizes:
+    t = timed_mandelbrot(s)
+    runtimes.append(t)
+    print(f"Size {s}x{s} ({s**2} pixels): {t:.4f}s")
+
+# 3. Plotting the results
+plt.figure(figsize=(8, 5))
+plt.plot(sizes, runtimes, 'o-', label='Actual Runtime')
+plt.xlabel('Grid Side Length (N)')
+plt.ylabel('Time (seconds)')
+plt.title('Mandelbrot Scaling: Grid Size vs Runtime')
+plt.grid(True)
+plt.show()
