@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+
 
 
 xmin, xmax = -2.0, 1.0
@@ -46,6 +48,19 @@ plt.imshow(escape_counts, cmap="inferno")
 plt.colorbar()
 plt.title("Naive Mandelbrot (100x100)")
 plt.show()
+print("Starting timing...")
+
+start = time.time()
+
+result = mandelbrot_grid(
+    x_vals=np.linspace(-2, 1, 1024),
+    y_vals=np.linspace(-1.5, 1.5, 1024),
+    max_iter=100
+)
+
+elapsed = time.time() - start
+print("Finished computation")
+print(f"Computation took {elapsed:.3f} seconds")
 
 
 
