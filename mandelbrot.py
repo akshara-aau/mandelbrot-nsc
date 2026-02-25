@@ -2,65 +2,41 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+# complex grid with 1024x1024 points linespace
+x = np.linspace(-2, 1, 1024)
+y = np.linspace(-1.5, 1.5, 1024)
+X, Y = np.meshgrid(x, y)
+C = X + 1j * Y
 
+#verify the shape of C
+print(f"Shape of C: {C.shape}")
+print(f"Type  : {C.dtype}")
 
-xmin, xmax = -2.0, 1.0
-ymin, ymax = -1.5, 1.5
-width, height = 100, 100  # small grid for testing
+#  Initialize Z (current values) and M (iteration counts or mask)
+Z = np.zeros_like(C)
+M = np.zeros(C.shape, dtype=int)
+max_iter = 100
 
-x_vals = np.linspace(xmin, xmax, width)
-y_vals = np.linspace(ymin, ymax, height)
-#iteration function for a single point
-def mandelbrot_point(c, max_iter=100):
-    z = 0
-    for n in range(max_iter):
-        z = z*z + c
-        if abs(z) > 2:
-            return n
-    return max_iter
-
-
-print(mandelbrot_point(0, max_iter=100))
-print(mandelbrot_point(2, max_iter=100))
-print(mandelbrot_point(-0.75 + 0.1j, max_iter=100))
-
-
-
-# Create a grid of complex numbers
-def mandelbrot_grid(x_vals, y_vals, max_iter=100):
-    height = len(y_vals)
-    width = len(x_vals)
-
-    result = np.zeros((height, width), dtype=int)
-
-    for i, y in enumerate(y_vals):
-        for j, x in enumerate(x_vals):
-            c = x + 1j*y
-            result[i, j] = mandelbrot_point(c, max_iter)
-
-    return result
-
-
-escape_counts = mandelbrot_grid(x_vals, y_vals, max_iter=100)
-escape_counts.shape
-
-plt.imshow(escape_counts, cmap="inferno")
-plt.colorbar()
-plt.title("Naive Mandelbrot (100x100)")
-plt.show()
-print("Starting timing...")
-
+print("Starting vectorized timing...")
 start = time.time()
 
-result = mandelbrot_grid(
-    x_vals=np.linspace(-2, 1, 1024),
-    y_vals=np.linspace(-1.5, 1.5, 1024),
-    max_iter=100
-)
+#  The Vectorized Loop (Loop 3 only)
+for n in range(max_iter):
+    #  True for points that are still inside
+    mask = np.abs(Z) <= 2
+    
+    # Update only the points that haven't escaped
+    Z[mask] = Z[mask]**2 + C[mask]
+    
+    # Increment the iteration count for those points
+    M[mask] += 1
 
 elapsed = time.time() - start
-print("Finished computation")
-print(f"Computation took {elapsed:.3f} seconds")
+print(f"Finished! Vectorized computation took {elapsed:.3f} seconds")
 
-
-
+#  drwaw the Mandelbrot set
+plt.figure(figsize=(10, 10))
+plt.imshow(M, extent=[-2, 1, -1.5, 1.5], cmap="magma")
+plt.colorbar(label="Iterations until escape")
+plt.title(f"Vectorized Mandelbrot Set ({elapsed:.3f}s)")
+plt.show()
