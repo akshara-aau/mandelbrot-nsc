@@ -2,6 +2,7 @@ import numpy as np
 import time
 
 # ---  NAIVE VERSION  ---
+@profile # Add this decorator
 def mandelbrot_naive(x_min, x_max, y_min, y_max, width, height, max_iter=100):
     x = np.linspace(x_min, x_max, width)
     y = np.linspace(y_min, y_max, height)
@@ -33,3 +34,7 @@ def mandelbrot_numpy(x_min, x_max, y_min, y_max, width, height, max_iter=100):
         Z[mask] = Z[mask]**2 + C[mask]
         M[mask] += 1
     return M
+
+# Add this at the very bottom of your script
+if __name__ == "__main__":
+    mandelbrot_naive(-2, 1, -1.5, 1.5, 512, 512)
