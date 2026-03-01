@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+
+from numba import njit
+
 #numpy version
 # complex grid with 1024x1024 points linespace
 x = np.linspace(-2, 1, 1024)
@@ -112,3 +115,36 @@ plt.ylabel('Time (seconds)')
 plt.title('Mandelbrot Scaling: Grid Size vs Runtime')
 plt.grid(True)
 plt.show()
+
+
+
+#numba JIT
+@njit
+def mandelbrot_numba(xmin, xmax, ymin, ymax, width, height, max_iter=100):
+    x_vals = np.linspace(xmin, xmax, width)
+    y_vals = np.linspace(ymin, ymax, height)
+
+    result = np.zeros((height, width), dtype=np.int32)
+
+    for i in range(height):
+        for j in range(width):
+
+            c = x_vals[j] + 1j * y_vals[i]
+            z = 0j
+            n = 0
+
+            while n < max_iter and (z.real*z.real + z.imag*z.imag) <= 4.0:
+                z = z*z + c
+                n += 1
+
+            result[i, j] = n
+
+    return result
+
+
+start = time.time()
+
+result = mandelbrot_numba(-2, 1, -1.5, 1.5, 512, 512)
+
+elapsed = time.time() - start
+print(f"Numba computation took {elapsed:.3f} seconds")
