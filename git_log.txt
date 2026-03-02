@@ -1,0 +1,78 @@
+2026-03-01 39277d9 milestone 4 :add performance report
+
+ performance_report.ipynb | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+2026-03-01 747ca1c milestone 4 :test different precision
+
+ mandelbrot_functions.py  |  82 +++++++++++++++++++++++++++++++++++------------
+ mandelbrot_precision.png | Bin 0 -> 99742 bytes
+ performance_report.ipynb |  21 +++++++++++-
+ 3 files changed, 82 insertions(+), 21 deletions(-)
+2026-03-01 31fbab6 milestone 3 all function comparison and result
+
+ mandelbrot.py            | 36 +++++++++++++++++++++
+ mandelbrot_functions.py  | 83 +++++++++++++++++++++++++++++++++++-------------
+ performance_report.ipynb | 28 ++++++++++++++++
+ 3 files changed, 125 insertions(+), 22 deletions(-)
+2026-03-01 5400225 hybrid and fully compiled version and measure difference
+
+ temp.py | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
+2026-02-26 6813f0d profiling output with question answers
+
+ performance_report.ipynb | 53 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 52 insertions(+), 1 deletion(-)
+2026-02-26 6cdafc7 Add profile decor to analyse mandelbrot_naive for checking slow line
+
+ mandelbrot_functions.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+2026-02-26 7b688ae add Cprofile summery table
+
+ performance_report.ipynb | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+2026-02-26 5b3f6f8 add 4th question answer
+
+ performance_report.ipynb | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+2026-02-26 a301881 cProfile on naive and NumPy
+
+ cprofile.py              |  14 +++++++
+ mandelbrot_functions.py  |  35 ++++++++++++++++
+ performance_report.ipynb | 107 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 156 insertions(+)
+2026-02-25 8b82db7 Mandelbrot runtime scaling with different grid size
+
+ mandelbrot.py | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+2026-02-25 f1ebfcc Measuring memory layout performance
+
+ mandelbrot.py | 60 +++++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 50 insertions(+), 10 deletions(-)
+2026-02-25 e5d95b6 Add matplot vectorization using numpy
+
+ mandelbrot.py | 92 ++++++++++++++++++++++-------------------------------------
+ 1 file changed, 34 insertions(+), 58 deletions(-)
+2026-02-25 23ee2cf Measure execution time of naive Mandelbrot implementation
+
+ mandelbrot.py | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+2026-02-25 cca8514 Add naive Mandelbrot grid computation using nested loops
+
+ mandelbrot.py | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+2026-02-25 3a16331 Add naive mandelbrot point iteration function
+
+ mandelbrot.py | 46 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
+2026-02-05 f0d7a54 Add TODO comment
+
+ mandelbrot.py | 1 +
+ 1 file changed, 1 insertion(+)
+2026-02-05 9574e8e Add mandelbrot skeleton
+
+ mandelbrot.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+2026-02-05 f0dc952 Add Python environment specification
+
+ environment.yml | 175 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 175 insertions(+)
