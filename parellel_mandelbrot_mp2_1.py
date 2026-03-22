@@ -44,12 +44,43 @@ def mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers):
     return np.vstack(parts)
 
 if __name__ == '__main__':
-    from mandelbrot_functions import mandelbrot_numba
     N = 512
-    result_serial = mandelbrot_serial(N, -2, 1, -1.5, 1.5, 100)
-    result_old = mandelbrot_numba(-2, 1, -1.5, 1.5, N, N, 100)
-    print("Serial vs L03 equal:", np.array_equal(result_serial, result_old))
+    x_min, x_max, y_min, y_max, max_iter = -2, 1, -1.5, 1.5, 100
     
-    n_workers = 4
-    result_parallel = mandelbrot_parallel(N, -2, 1, -1.5, 1.5, 100, n_workers)
-    print("Parallel vs Serial equal:", np.array_equal(result_parallel, result_serial))
+    # Warm-up serial (JIT in main process)
+    _ = mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
+    
+    # Benchmark serial
+    times = []
+    for _ in range(3):
+        t0 = time.perf_counter()
+        _ = mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
+        times.append(time.perf_counter() - t0)
+    t_serial = statistics.median(times)
+    print(f"Serial: {t_serial:.3f}s")
+    
+    # Benchmark parallel for each n_workers
+    for p in range(1, os.cpu_count() + 1):
+        # Build chunks for this p
+        chunks = []
+        rows_per_worker = N // p
+        for i in range(p):
+            row_start = i * rows_per_worker
+            row_end = (i + 1) * rows_per_worker if i < p - 1 else N
+            chunks.append((row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter))
+        
+        with Pool(processes=p) as pool:
+            # Warm-up: trigger JIT in workers
+            _ = pool.map(worker, chunks)
+            
+            # Timed runs
+            times = []
+            for _ in range(3):
+                t0 = time.perf_counter()
+                parts = pool.map(worker, chunks)
+                _ = np.vstack(parts)
+                times.append(time.perf_counter() - t0)
+            t_p = statistics.median(times)
+            Sp = t_serial / t_p
+            Ep = Sp / p
+            print(f"{p:2d} workers: {t_p:.3f}s speedup={Sp:.2f} efficiency={Ep:.2f}")
