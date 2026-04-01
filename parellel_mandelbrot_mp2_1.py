@@ -32,15 +32,23 @@ def mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter=100):
 def worker(args):
     return mandelbrot_chunk(*args)
 
-def mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers):
+def mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, n_workers, n_chunks=None, pool=None):
+    if n_chunks is None:
+        n_chunks = n_workers
+    
     chunks = []
-    rows_per_worker = N // n_workers
-    for i in range(n_workers):
-        row_start = i * rows_per_worker
-        row_end = (i + 1) * rows_per_worker if i < n_workers - 1 else N
+    rows_per_chunk = N // n_chunks
+    for i in range(n_chunks):
+        row_start = i * rows_per_chunk
+        row_end = (i + 1) * rows_per_chunk if i < n_chunks - 1 else N
         chunks.append((row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter))
-    with Pool(processes=n_workers) as pool:
+    
+    if pool is None:
+        with Pool(processes=n_workers) as pool:
+            parts = pool.map(worker, chunks)
+    else:
         parts = pool.map(worker, chunks)
+    
     return np.vstack(parts)
 
 if __name__ == '__main__':
@@ -48,7 +56,7 @@ if __name__ == '__main__':
     x_min, x_max, y_min, y_max, max_iter = -2, 1, -1.5, 1.5, 100
     
     # Warm-up serial (JIT in main process)
-    _ = mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
+    serial_result = mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
     
     # Benchmark serial
     times = []
@@ -59,28 +67,46 @@ if __name__ == '__main__':
     t_serial = statistics.median(times)
     print(f"Serial: {t_serial:.3f}s")
     
-    # Benchmark parallel for each n_workers
+    # Verify parallel output matches serial
+    print("\n--- Verification: n_chunks = n_workers ---")
+    for p in range(1, min(5, os.cpu_count() + 1)):
+        parallel_result = mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, p, n_chunks=p)
+        match = np.array_equal(serial_result, parallel_result)
+        print(f"{p} workers: Output matches serial = {match}")
+    
+    # Benchmark parallel for each n_workers with default n_chunks = n_workers
+    print("\n--- Benchmark: n_chunks = n_workers ---")
     for p in range(1, os.cpu_count() + 1):
-        # Build chunks for this p
-        chunks = []
-        rows_per_worker = N // p
-        for i in range(p):
-            row_start = i * rows_per_worker
-            row_end = (i + 1) * rows_per_worker if i < p - 1 else N
-            chunks.append((row_start, row_end, N, x_min, x_max, y_min, y_max, max_iter))
-        
         with Pool(processes=p) as pool:
             # Warm-up: trigger JIT in workers
-            _ = pool.map(worker, chunks)
+            _ = mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, p, n_chunks=p, pool=pool)
             
             # Timed runs
             times = []
             for _ in range(3):
                 t0 = time.perf_counter()
-                parts = pool.map(worker, chunks)
-                _ = np.vstack(parts)
+                _ = mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, p, n_chunks=p, pool=pool)
                 times.append(time.perf_counter() - t0)
-            t_p = statistics.median(times)
-            Sp = t_serial / t_p
-            Ep = Sp / p
-            print(f"{p:2d} workers: {t_p:.3f}s speedup={Sp:.2f} efficiency={Ep:.2f}")
+        t_p = statistics.median(times)
+        Sp = t_serial / t_p
+        Ep = Sp / p
+        print(f"{p:2d} workers: {t_p:.3f}s speedup={Sp:.2f} efficiency={Ep:.2f}")
+    
+    # Benchmark parallel with n_chunks = 4 * n_workers
+    print("\n--- Benchmark: n_chunks = 4 × n_workers ---")
+    for p in range(1, os.cpu_count() + 1):
+        n_chunks = 4 * p
+        with Pool(processes=p) as pool:
+            # Warm-up: trigger JIT in workers
+            _ = mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, p, n_chunks=n_chunks, pool=pool)
+            
+            # Timed runs
+            times = []
+            for _ in range(3):
+                t0 = time.perf_counter()
+                _ = mandelbrot_parallel(N, x_min, x_max, y_min, y_max, max_iter, p, n_chunks=n_chunks, pool=pool)
+                times.append(time.perf_counter() - t0)
+        t_p = statistics.median(times)
+        Sp = t_serial / t_p
+        Ep = Sp / p
+        print(f"{p:2d} workers, {n_chunks:2d} chunks: {t_p:.3f}s speedup={Sp:.2f} efficiency={Ep:.2f}")
