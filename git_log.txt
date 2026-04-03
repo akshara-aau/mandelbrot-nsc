@@ -1,3 +1,62 @@
+2026-04-03 b7e995a mini project 2 report
+
+ NSC-MINI-PROJECT2.pdf | Bin 0 -> 2327628 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-04-03 0e1fc32 Record results in performance notebook (MP2)
+
+ mp2_m1_benchmark.py | 113 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+2026-04-02 d8218fe Record time in performance notebook (MP2)  and Record n chunks optimal and LIF min in performance notebook (MP2)
+
+ dask_m2_sweep.png           | Bin 0 -> 71448 bytes
+ dask_mandelbrot_local.py    |  61 +++++++++++++++++++++++
+ dask_mandelbrot_m2_sweep.py | 115 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 176 insertions(+)
+2026-04-01 0287d81 Record optimal n chunks and LIF in performance notebook (MP2)
+
+ l04_chunk_sweep.py | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+2026-04-01 6da9ef7 Remove performance_report.ipynb from version control
+
+ performance_report.ipynb | 221 -----------------------------------------------
+ 1 file changed, 221 deletions(-)
+2026-04-01 be18db2 Record optimal n chunks and LIF in performance notebook (MP2)
+
+ chunk_sweep_mp2.py       | 95 ++++++++++++++++++++++++++++++++++++++++++++++++
+ performance_report.ipynb | 11 +-----
+ 2 files changed, 96 insertions(+), 10 deletions(-)
+2026-04-01 aee1b75 Verify result matches serial output → commit
+
+ parellel_mandelbrot_mp2_1.py | 72 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 23 deletions(-)
+2026-03-22 aaddc78 Record speedup table in performance notebook (MP2)
+
+ parellel_mandelbrot_mp2_1.py | 45 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 7 deletions(-)
+2026-03-22 a9cf2f4 Verify result matches serial
+
+ parellel_mandelbrot_mp2_1.py | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+2026-03-22 bbc58df Serial result matches your L03 output
+
+ parellel_mandelbrot_mp2_1.py | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+2026-03-19 ea621cb paellel implementation
+
+ parallel_implementation.py | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+2026-03-19 a09dcd0 monte carlo serial implementation
+
+ serial_implementation.py | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+2026-03-02 a9f14b5 add mini project report
+
+ NSC-MINI-PROJECT.pdf | Bin 0 -> 1479172 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-03-02 758d635 git log file
+
+ git_log.txt | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 2026-03-01 39277d9 milestone 4 :add performance report
 
  performance_report.ipynb | 14 ++++++++++++++
