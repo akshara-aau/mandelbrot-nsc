@@ -1,3 +1,41 @@
+2026-04-26 ad0e44f Complete MP3 M3: Final GPU vs CPU benchmark analysis
+
+ benchmark_mp3_final.png   | Bin 0 -> 85131 bytes
+ mp3_m3_final_benchmark.py |  47 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+2026-04-26 20dbfe5 Add GPU precision comparison; document M4 fp64 limitations
+
+ mp3_m2_gpu_precision_comparison.py | 131 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+2026-04-26 7c082c6 Implement OpenCL GPU kernel; achieve 0.003s runtime on M4
+
+ mandelbrot_gpu_result.png | Bin 0 -> 79393 bytes
+ mp3_m1_gpu_mandelbrot.py  |  97 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
+2026-04-26 92067d6 M2 Docstrings and Type Hints
+
+ mandelbrot_functions.py             | 111 +++++++++++++++++++++---------------
+ mandelbrot_precision_comparison.png | Bin 0 -> 86151 bytes
+ 2 files changed, 65 insertions(+), 46 deletions(-)
+2026-04-26 d9b47bc MP3 M1 Test suit pytest passcount converges
+
+ test_install.py    | 22 ++++++++++++++
+ test_mandelbrot.py | 85 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 107 insertions(+)
+2026-04-26 f5a515b  Mandelbrot Sensitivity Map
+
+ mp3_m2_sensitivity.py      |  77 +++++++++++++++++++++++++++++++++++++++++++++
+ mp3_m2_sensitivity_map.png | Bin 0 -> 124616 bytes
+ 2 files changed, 77 insertions(+)
+2026-04-25 a370fe5 Mandelbrot Trajectory Divergence
+
+ mp3_m1_divergence.py             |  89 +++++++++++++++++++++++++++++++++++++++
+ mp3_m1_divergence_comparison.png | Bin 0 -> 238507 bytes
+ 2 files changed, 89 insertions(+)
+2026-04-03 6b5418b added git log text file
+
+ git_log.txt | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 2026-04-03 b7e995a mini project 2 report
 
  NSC-MINI-PROJECT2.pdf | Bin 0 -> 2327628 bytes
